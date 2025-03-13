@@ -23,6 +23,10 @@ async def main():
     site = web.TCPSite(runner, "0.0.0.0", PORT)
     await site.start()
 
+@app.get("/favicon.png")
+async def favicon_handler(request):
+    return web.Response(status=204)  # Mengabaikan favicon request
+
 # Tidak pakai .run(), gunakan asyncio agar bisa jalan via webhook
 import asyncio
 asyncio.run(main())
