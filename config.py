@@ -21,9 +21,10 @@ API_HASH = os.environ.get("API_HASH", "")
 CHANNEL_ID = int(os.environ.get("CHANNEL_ID", ""))
 
 # Protect Content
-PROTECT_CONTENT = def strtobool(val):
-    return val.lower() in ("y", "yes", "t", "true", "on", "1")
- ("PROTECT_CONTENT", "False"))
+def strtobool(val):
+    return val.lower() in ("true", "1", "yes")
+
+PROTECT_CONTENT = strtobool(os.environ.get("PROTECT_CONTENT", "False"))
 
 # Heroku Credentials for updater.
 HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", None)
