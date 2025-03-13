@@ -10,6 +10,7 @@ from pyrogram import Client
 from pyrogram.enums import ParseMode
 from datetime import datetime
 
+from mongo_storage import MongoStorage
 from config import (
     API_HASH,
     APP_ID,
@@ -38,18 +39,19 @@ name ="""
 
 class Bot(Client):
     def __init__(self):
+        self.mongo_storage = MongoStorage(uri=MONGO_URI, database="pyrogram_sessions")
         super().__init__(
             name="Bot",
             api_hash=API_HASH,
             api_id=APP_ID,
             plugins={"root": "plugins"},
             workers=TG_BOT_WORKERS,
-            bot_token=TG_BOT_TOKEN,
-            storage=MongoStorage(uri=MONGO_URI, database="pyrogram_sessions")
+            bot_token=TG_BOT_TOKEN
         )
         self.LOGGER = LOGGER
         
     async def start(self):
+        await self.mongo_storage.open()
         await super().start()
         usr_bot_me = await self.get_me()
         self.uptime = datetime.now()
@@ -57,7 +59,7 @@ class Bot(Client):
         self.set_parse_mode(ParseMode.HTML)
         self.LOGGER(__name__).info(f"Bot Running..!\n\nCreated by \nhttps://t.me/CodeXBotz")
         self.username = usr_bot_me.username
-
+        
         if FORCE_SUB_CHANNEL:
             try:
                 info = await self.get_chat(FORCE_SUB_CHANNEL)
@@ -188,5 +190,6 @@ class Bot(Client):
         await web.TCPSite(app, bind_address, PORT).start()
         
     async def stop(self, *args):
+        await self.mongo_storage.close()
         await super().stop()
         self.LOGGER(__name__).info("Bot stopped.")
