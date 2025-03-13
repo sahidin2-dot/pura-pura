@@ -4,7 +4,22 @@ from dotenv import load_dotenv
 from logging.handlers import RotatingFileHandler
 
 # Load variabel lingkungan dari config.env
-load_dotenv("config.env")
+load_dotenv() 
+
+API_HASH = os.getenv("API_HASH")
+APP_ID = int(os.getenv("APP_ID"))
+TG_BOT_TOKEN = os.getenv("TG_BOT_TOKEN")
+TG_BOT_WORKERS = int(os.getenv("TG_BOT_WORKERS", 10))
+PORT = int(os.getenv("PORT", 8080))
+MONGO_URI = os.getenv("MONGO_URI")
+
+CHANNEL_ID = int(os.getenv("CHANNEL_ID"))
+FORCE_SUB_CHANNEL = os.getenv("FORCE_SUB_CHANNEL")
+FORCE_SUB_GROUP = os.getenv("FORCE_SUB_GROUP")
+FORCE_SUB_CHANNEL2 = os.getenv("FORCE_SUB_CHANNEL2")
+FORCE_SUB_GROUP2 = os.getenv("FORCE_SUB_GROUP2")
+
+LOGGER = print
 
 # Fungsi sederhana untuk mengonversi string ke boolean
 def strtobool(val):
