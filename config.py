@@ -68,9 +68,10 @@ FORCE_MSG = os.environ.get(
 CUSTOM_CAPTION = os.environ.get("CUSTOM_CAPTION", None)
 
 # Setel True jika Anda ingin Menonaktifkan tombol Bagikan Kiriman Saluran Anda
-DISABLE_CHANNEL_BUTTON = def strtobool(val):
-    return val.lower() in ("y", "yes", "t", "true", "on", "1")
- ("DISABLE_CHANNEL_BUTTON", "False"))
+def strtobool(val):
+    return val.lower() in ("true", "1", "yes")
+
+DISABLE_CHANNEL_BUTTON = strtobool(os.environ.get("DISABLE_CHANNEL_BUTTON", "False"))
 
 LOG_FILE_NAME = "logs.txt"
 logging.basicConfig(
