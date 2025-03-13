@@ -1,78 +1,76 @@
-#(©) @IndomieProject
-
 import logging
 import os
-from distutils.util import strtobool
 from dotenv import load_dotenv
 from logging.handlers import RotatingFileHandler
 
+# Load variabel lingkungan dari config.env
 load_dotenv("config.env")
+
+# Fungsi sederhana untuk mengonversi string ke boolean
+def strtobool(val):
+    return val.lower() in ("true", "1", "yes")
 
 # Bot token dari @Botfather
 TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "")
 
-# API ID Anda dari my.telegram.org
-APP_ID = int(os.environ.get("APP_ID", ""))
-
-# API Hash Anda dari my.telegram.org
+# API ID dan Hash dari my.telegram.org
+APP_ID = int(os.environ.get("APP_ID", "0"))
 API_HASH = os.environ.get("API_HASH", "")
 
 # ID Channel Database
-CHANNEL_ID = int(os.environ.get("CHANNEL_ID", ""))
+CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "0"))
 
 # Protect Content
-def strtobool(val):
-    return val.lower() in ("true", "1", "yes")
-
 PROTECT_CONTENT = strtobool(os.environ.get("PROTECT_CONTENT", "False"))
 
-# Heroku Credentials for updater.
+# Heroku Credentials untuk updater
 HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", None)
 HEROKU_API_KEY = os.environ.get("HEROKU_API_KEY", None)
 
-#Port
-PORT = os.environ.get("PORT", "8080")
+# Port untuk server
+PORT = int(os.environ.get("PORT", "8080"))
 
-# Custom Repo for updater.
+# Custom Repo untuk updater
 UPSTREAM_BRANCH = os.environ.get("UPSTREAM_BRANCH", "master")
 
-#Database 
+# Database
 DB_URI = os.environ.get("DATABASE_URL", "")
 DB_NAME = os.environ.get("DATABASE_NAME", "filesharexbot")
 
-# ID dari Channel Atau Group Untuk Wajib Subscribenya
+# Wajib Subscribe Channel/Group
 FORCE_SUB_CHANNEL = int(os.environ.get("FORCE_SUB_CHANNEL", "0"))
 FORCE_SUB_GROUP = int(os.environ.get("FORCE_SUB_GROUP", "0"))
 FORCE_SUB_CHANNEL2 = int(os.environ.get("FORCE_SUB_CHANNEL2", "0"))
 FORCE_SUB_GROUP2 = int(os.environ.get("FORCE_SUB_GROUP2", "0"))
 
+# Jumlah worker bot
 TG_BOT_WORKERS = int(os.environ.get("TG_BOT_WORKERS", "4"))
 
 # Pesan Awalan /start
 START_MSG = os.environ.get(
     "START_MESSAGE",
-    "<b>Hello {first}</b>\n\n<b>Saya dapat menyimpan file pribadi di Channel Tertentu dan pengguna lain dapat mengaksesnya dari link khusus.</b>",
+    "<b>Hello {first}</b>\n\n<b>Saya dapat menyimpan file pribadi di Channel tertentu dan pengguna lain bisa mengaksesnya lewat link khusus.</b>",
 )
+
+# Admin bot (list User ID)
 try:
-    ADMINS = [int(x) for x in (os.environ.get("ADMINS", "").split())]
+    ADMINS = [int(x) for x in os.environ.get("ADMINS", "").split()]
 except ValueError:
     raise Exception("Daftar Admin Anda tidak berisi User ID Telegram yang valid.")
 
-# Pesan Saat Memaksa Subscribe
+# Pesan wajib subscribe
 FORCE_MSG = os.environ.get(
     "FORCE_SUB_MESSAGE",
-    "<b>Hello {first}\n\nAnda harus bergabung di Channel/Grup saya Terlebih dahulu untuk Melihat File yang saya Bagikan\n\nSilakan Join Ke Channel & Group Terlebih Dahulu</b>",
+    "<b>Hello {first}\n\nAnda harus bergabung di Channel/Grup saya terlebih dahulu untuk melihat file yang saya bagikan.\n\nSilakan join Channel & Group terlebih dahulu.</b>",
 )
 
-# Atur Teks Kustom Anda di sini, Simpan (None) untuk Menonaktifkan Teks Kustom
+# Kustom teks caption
 CUSTOM_CAPTION = os.environ.get("CUSTOM_CAPTION", None)
 
-# Setel True jika Anda ingin Menonaktifkan tombol Bagikan Kiriman Saluran Anda
-def strtobool(val):
-    return val.lower() in ("true", "1", "yes")
-
+# Nonaktifkan tombol Bagikan di Channel
 DISABLE_CHANNEL_BUTTON = strtobool(os.environ.get("DISABLE_CHANNEL_BUTTON", "False"))
 
+# Log file setup
 LOG_FILE_NAME = "logs.txt"
 logging.basicConfig(
     level=logging.INFO,
@@ -85,6 +83,6 @@ logging.basicConfig(
 )
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 
-
+# Fungsi untuk mendapatkan logger
 def LOGGER(name: str) -> logging.Logger:
     return logging.getLogger(name)
