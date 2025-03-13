@@ -21,7 +21,9 @@ API_HASH = os.environ.get("API_HASH", "")
 CHANNEL_ID = int(os.environ.get("CHANNEL_ID", ""))
 
 # Protect Content
-PROTECT_CONTENT = strtobool(os.environ.get("PROTECT_CONTENT", "False"))
+PROTECT_CONTENT = def strtobool(val):
+    return val.lower() in ("y", "yes", "t", "true", "on", "1")
+ ("PROTECT_CONTENT", "False"))
 
 # Heroku Credentials for updater.
 HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", None)
@@ -65,7 +67,9 @@ FORCE_MSG = os.environ.get(
 CUSTOM_CAPTION = os.environ.get("CUSTOM_CAPTION", None)
 
 # Setel True jika Anda ingin Menonaktifkan tombol Bagikan Kiriman Saluran Anda
-DISABLE_CHANNEL_BUTTON = strtobool(os.environ.get("DISABLE_CHANNEL_BUTTON", "False"))
+DISABLE_CHANNEL_BUTTON = def strtobool(val):
+    return val.lower() in ("y", "yes", "t", "true", "on", "1")
+ ("DISABLE_CHANNEL_BUTTON", "False"))
 
 LOG_FILE_NAME = "logs.txt"
 logging.basicConfig(
