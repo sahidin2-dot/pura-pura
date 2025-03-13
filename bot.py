@@ -1,32 +1,20 @@
 # (©) @IndomieProject
 import os
 from aiohttp import web
-from plugins import web_server
-
 import pyromod.listen
-from aiohttp import web
 from plugins import web_server
 from pyrogram import Client
 from pyrogram.enums import ParseMode
 from datetime import datetime
-
 from mongo_storage import MongoStorage
 from config import (
-    API_HASH,
-    APP_ID,
-    CHANNEL_ID,
-    FORCE_SUB_CHANNEL,
-    FORCE_SUB_GROUP,
-    FORCE_SUB_CHANNEL2,
-    FORCE_SUB_GROUP2,
-    LOGGER,
-    TG_BOT_TOKEN,
-    TG_BOT_WORKERS,
-    PORT,
+    API_HASH, APP_ID, CHANNEL_ID, FORCE_SUB_CHANNEL, FORCE_SUB_GROUP,
+    FORCE_SUB_CHANNEL2, FORCE_SUB_GROUP2, LOGGER, TG_BOT_TOKEN,
+    TG_BOT_WORKERS, PORT
 )
 
-
-name ="""
+# Logo
+name = """
 ░█████╗░░█████╗░██████╗░███████╗██╗░░██╗██████╗░░█████╗░████████╗███████╗
 ██╔══██╗██╔══██╗██╔══██╗██╔════╝╚██╗██╔╝██╔══██╗██╔══██╗╚══██╔══╝╚════██║
 ██║░░╚═╝██║░░██║██║░░██║█████╗░░░╚███╔╝░██████╦╝██║░░██║░░░██║░░░░░███╔═╝
@@ -35,29 +23,19 @@ name ="""
 ░╚════╝░░╚════╝░╚═════╝░╚══════╝╚═╝░░╚═╝╚═════╝░░╚════╝░░░░╚═╝░░░╚══════╝
 """
 
+# Ambil variabel MONGO_URI dari environment
 MONGO_URI = os.getenv("MONGO_URI")
 
 if not MONGO_URI:
-    print("MONGO_URI is not set!")
+    raise ValueError("MONGO_URI is not set!")
 else:
     print(f"MONGO_URI: {MONGO_URI}")
 
-class Bot:
-    def __init__(self):
-        # Ambil variabel MONGO_URI dari environment
-        self.MONGO_URI = os.getenv("MONGO_URI")
-
-        if not self.MONGO_URI:
-            raise ValueError("MONGO_URI is not set!")
-        else:
-            print(f"MONGO_URI: {self.MONGO_URI}")
-
-        # Inisialisasi MongoDB storage
-        self.mongo_storage = MongoStorage(uri=self.MONGO_URI, database="pyrogram_sessions")
+# Inisialisasi MongoDB storage
+mongo_storage = MongoStorage(uri=MONGO_URI, database="pyrogram_sessions")
 
 class Bot(Client):
     def __init__(self):
-        self.mongo_storage = MongoStorage(uri=MONGO_URI, database="pyrogram_sessions")
         super().__init__(
             name="Bot",
             api_hash=API_HASH,
@@ -67,17 +45,18 @@ class Bot(Client):
             bot_token=TG_BOT_TOKEN
         )
         self.LOGGER = LOGGER
+        self.mongo_storage = mongo_storage
         
     async def start(self):
         await self.mongo_storage.open()
         await super().start()
         usr_bot_me = await self.get_me()
         self.uptime = datetime.now()
-
         self.set_parse_mode(ParseMode.HTML)
+
         self.LOGGER(__name__).info(f"Bot Running..!\n\nCreated by \nhttps://t.me/CodeXBotz")
         self.username = usr_bot_me.username
-        
+      
         if FORCE_SUB_CHANNEL:
             try:
                 info = await self.get_chat(FORCE_SUB_CHANNEL)
