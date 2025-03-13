@@ -76,7 +76,8 @@ logging.basicConfig(
     level=logging.INFO,
     format="[%(levelname)s] - %(name)s - %(message)s",
     datefmt="%d-%b-%y %H:%M:%S",
-    handlers=[
+    handlers=[logging.StreamHandler()],
+)
         RotatingFileHandler(LOG_FILE_NAME, maxBytes=50000000, backupCount=10),
         logging.StreamHandler(),
     ],
