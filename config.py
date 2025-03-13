@@ -79,7 +79,7 @@ logging.basicConfig(
     handlers=[logging.StreamHandler()]
 )   
 RotatingFileHandler(LOG_FILE_NAME, maxBytes=50000000, backupCount=10),
-logging.StreamHandler()
+[logging.StreamHandler()
 ]
 )
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
