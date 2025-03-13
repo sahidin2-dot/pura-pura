@@ -36,6 +36,11 @@ mongo_storage = MongoStorage(uri=MONGO_URI, database="pyrogram_sessions")
 
 class Bot(Client):
     def __init__(self):
+        if not MONGO_URI:
+            raise ValueError("MONGO_URI is not set!")
+        print(f"MONGO_URI: {MONGO_URI}")
+
+        self.mongo_storage = MongoStorage(uri=MONGO_URI, database="pyrogram_sessions")
         super().__init__(
             name="Bot",
             api_hash=API_HASH,
@@ -45,7 +50,6 @@ class Bot(Client):
             bot_token=TG_BOT_TOKEN
         )
         self.LOGGER = LOGGER
-        self.mongo_storage = mongo_storage
         
     async def start(self):
         await self.mongo_storage.open()
