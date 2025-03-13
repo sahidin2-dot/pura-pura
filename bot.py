@@ -1,5 +1,5 @@
 # (©) @IndomieProject
-
+import os
 from aiohttp import web
 from plugins import web_server
 
@@ -35,7 +35,16 @@ name ="""
 ░╚════╝░░╚════╝░╚═════╝░╚══════╝╚═╝░░╚═╝╚═════╝░░╚════╝░░░░╚═╝░░░╚══════╝
 """
 
+MONGO_URI = os.getenv("MONGO_URI")
 
+if not MONGO_URI:
+    print("MONGO_URI is not set!")
+else:
+    print(f"MONGO_URI: {MONGO_URI}")
+
+class Bot:
+    def __init__(self):
+        self.mongo_storage = MongoStorage(uri=MONGO_URI, database="pyrogram_sessions")
 
 class Bot(Client):
     def __init__(self):
