@@ -44,7 +44,16 @@ else:
 
 class Bot:
     def __init__(self):
-        self.mongo_storage = MongoStorage(uri=MONGO_URI, database="pyrogram_sessions")
+        # Ambil variabel MONGO_URI dari environment
+        self.MONGO_URI = os.getenv("MONGO_URI")
+
+        if not self.MONGO_URI:
+            raise ValueError("MONGO_URI is not set!")
+        else:
+            print(f"MONGO_URI: {self.MONGO_URI}")
+
+        # Inisialisasi MongoDB storage
+        self.mongo_storage = MongoStorage(uri=self.MONGO_URI, database="pyrogram_sessions")
 
 class Bot(Client):
     def __init__(self):
