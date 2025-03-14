@@ -8,11 +8,9 @@
   ],
   "routes": [
     {
-      "src": "/.*",
+      "src": "/(.*)",
       "dest": "api/index.py"
     }
-  ],
-  "env": {
-    "MONGO_URI": "@MONGO_URI"
-  }
+  ]
 }
+
