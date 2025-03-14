@@ -4,4 +4,4 @@ aiohttp
 pyromod
 python-dotenv
 motor
-flask==2.0.1
+flask==3.0.3
